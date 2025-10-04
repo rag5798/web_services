@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>New Contact</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Add a Contact</h1>
+    <nav>
+      <a href="/contacts">View Contacts</a> |
+      <a href="/contacts/new">Add Contact</a>|
+      <a href="/contacts/manage">Manage Contacts (Create / Update / Delete)</a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="contactForm" novalidate style="max-width: 480px;">
+      <label>
+        First Name
+        <input name="firstName" type="text" required />
+      </label>
+      <br />
+      <label>
+        Last Name
+        <input name="lastName" type="text" required />
+      </label>
+      <br />
+      <label>
+        Email
+        <input name="email" type="email" required />
+      </label>
+      <br />
+      <label>
+        Favorite Color
+        <input name="favoriteColor" type="text" required />
+      </label>
+      <br />
+      <label>
+        Birthday (YYYY-MM-DD)
+        <input name="birthday" type="date" required />
+      </label>
+      <br />
+      <button type="submit">Create Contact</button>
+    </form>
+
+    <p id="message" aria-live="polite" style="margin-top:1rem;"></p>
+  </main>
+
+  <script src="/js/new-contacts.js" defer></script>
+</body>
+</html>

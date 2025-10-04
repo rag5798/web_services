@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Contacts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Contacts</h1>
+    <nav>
+      <a href="/contacts">View Contacts</a> |
+      <a href="/contacts/new">Add a New Contact</a> |
+      <a href="/contacts/manage">Manage Contacts (Create / Update / Delete)</a>
+    </nav>
+  </header>
+
+  <main>
+    <button id="loadBtn">Load Contacts</button>
+    <div id="status" aria-live="polite"></div>
+
+    <table id="contactsTable" style="margin-top:1rem; width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left; border-bottom:1px solid #ccc;">First Name</th>
+          <th style="text-align:left; border-bottom:1px solid #ccc;">Last Name</th>
+          <th style="text-align:left; border-bottom:1px solid #ccc;">Email</th>
+          <th style="text-align:left; border-bottom:1px solid #ccc;">Favorite Color</th>
+          <th style="text-align:left; border-bottom:1px solid #ccc;">Birthday</th>
+        </tr>
+      </thead>
+      <tbody id="contactsBody"></tbody>
+    </table>
+  </main>
+
+  <script src="/js/contacts.js" defer></script>
+</body>
+</html>

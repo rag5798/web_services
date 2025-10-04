@@ -1,0 +1,42 @@
+### 1) List all contacts
+GET http://localhost:8080/api/contacts
+Accept: application/json
+
+### 2) Create a contact with a FIXED _id (requires the POST tweak above)
+POST http://localhost:8080/api/contacts
+Content-Type: application/json
+Accept: application/json
+
+{
+  "_id": "64a64a64a64a64a64a64a64a",
+  "firstName": "Fixed",
+  "lastName": "Person",
+  "email": "fixed.person@example.test",
+  "favoriteColor": "teal",
+  "birthday": "2001-01-01"
+}
+
+### 3) Get that one contact
+GET http://localhost:8080/api/contacts/64a64a64a64a64a64a64a64a
+Accept: application/json
+
+### 4) Update that contact (expects 204 No Content)
+PUT http://localhost:8080/api/contacts/64a64a64a64a64a64a64a64a
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "FixedUpdated",
+  "lastName": "Person",
+  "email": "fixed.person@example.test",
+  "favoriteColor": "blue",
+  "birthday": "2001-01-02"
+}
+
+### 5) Delete that contact (expects 204 No Content)
+DELETE http://localhost:8080/api/contacts/64a64a64a64a64a64a64a64a
+Accept: application/json
+
+### 6) Verify deletion (should be 404)
+GET http://localhost:8080/api/contacts/64a64a64a64a64a64a64a64a
+Accept: application/json

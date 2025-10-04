@@ -1,8 +1,22 @@
-// express web server
+// server.js
+require('dotenv').config();
 const express = require('express');
-const app = express();
-const lesson1Controller = require("./controllers/lesson1Controller")
+const cors = require('cors');
 
-app.use('/', require('./routers/index'))
-app.listen(process.env.port || 3000);
-console.log("Web Server Listening on localhost:3000");
+const app = express();
+
+// middleware
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// static + root routes (keep yours)
+app.use('/', require('./routers/static'));
+app.use('/', require('./routers/index'));
+
+// NEW: split pages and API
+app.use('/contacts', require('./routers/contacts_pages'));   // HTML pages
+app.use('/api/contacts', require('./routers/contacts_api')); // JSON API
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Web Server Listening on localhost:${PORT}`));

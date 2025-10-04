@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Manage Contacts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Manage Contacts</h1>
+    <p class="muted small">
+      Use this page to <strong>create</strong>, <strong>update</strong>, and <strong>delete</strong> contacts via your API.
+      It calls: <code>POST /contacts</code>, <code>PUT /contacts/:id</code>, <code>DELETE /contacts/:id</code>.
+    </p>
+    <nav class="small">
+      <a href="/contacts">Home</a> |
+      <a href="/contacts/new">View Contacts</a> |
+      <strong>Manage Contacts</strong>
+    </nav>
+  </header>
+
+  <section>
+    <button id="refreshBtn">Refresh list</button>
+    <span id="listStatus" class="status"></span>
+    <table aria-label="Contacts">
+      <thead>
+        <tr>
+          <th>_id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Favorite Color</th>
+          <th>Birthday</th>
+        </tr>
+      </thead>
+      <tbody id="contactsBody"></tbody>
+    </table>
+  </section>
+
+  <section class="row">
+    <!-- CREATE -->
+    <fieldset>
+      <legend>Create (POST /contacts)</legend>
+      <form id="createForm" novalidate>
+        <label>First Name
+          <input name="firstName" required />
+        </label>
+        <label>Last Name
+          <input name="lastName" required />
+        </label>
+        <label>Email
+          <input name="email" type="email" required />
+        </label>
+        <label>Favorite Color
+          <input name="favoriteColor" required />
+        </label>
+        <label>Birthday (YYYY-MM-DD)
+          <input name="birthday" type="date" required />
+        </label>
+        <button type="submit">Create</button>
+        <div id="createMsg" class="status"></div>
+      </form>
+    </fieldset>
+
+    <!-- UPDATE -->
+    <fieldset>
+      <legend>Update (PUT /contacts/:id)</legend>
+      <form id="updateForm" novalidate>
+        <label>Choose contact to update
+          <select id="updateId" class="id-select" required>
+            <option value="">-- select an id --</option>
+          </select>
+        </label>
+        <label>First Name
+          <input name="firstName" required />
+        </label>
+        <label>Last Name
+          <input name="lastName" required />
+        </label>
+        <label>Email
+          <input name="email" type="email" required />
+        </label>
+        <label>Favorite Color
+          <input name="favoriteColor" required />
+        </label>
+        <label>Birthday (YYYY-MM-DD)
+          <input name="birthday" type="date" required />
+        </label>
+        <button type="submit">Update</button>
+        <div id="updateMsg" class="status"></div>
+      </form>
+    </fieldset>
+  </section>
+
+  <section>
+    <!-- DELETE -->
+    <fieldset>
+      <legend>Delete (DELETE /contacts/:id)</legend>
+      <form id="deleteForm" novalidate>
+        <label>Choose contact to delete
+          <select id="deleteId" class="id-select" required>
+            <option value="">-- select an id --</option>
+          </select>
+        </label>
+        <button type="submit" style="background:#fbeaea;border:1px solid #f2c4c4;">Delete</button>
+        <div id="deleteMsg" class="status"></div>
+      </form>
+    </fieldset>
+  </section>
+
+  <script src="/js/manage-contacts.js" defer></script>
+</body>
+</html>
