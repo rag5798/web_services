@@ -7,7 +7,7 @@ let _db;
 async function connect() {
   if (_db) return _db;
   const uri = process.env.MONGODB_URI;
-  const dbName = process.env.DB_NAME || 'contactsdb';
+  const dbName = process.env.DB_NAME || 'contacts';
 
   _client = new MongoClient(uri);
   await _client.connect();
