@@ -3,6 +3,215 @@ const router = require('express').Router();
 const { ObjectId } = require('mongodb');
 const { connect, getDb } = require('../database');
 
+/**
+ * @openapi
+ * tags:
+ *   - name: Contacts
+ *     description: Contacts CRUD endpoints
+ */
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Contact:
+ *       type: object
+ *       required: [firstName, lastName, email, favoriteColor, birthday]
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Mongo ObjectId
+ *           example: 66f0b8f3d9c0a8a7d1a2b3c4
+ *         firstName:
+ *           type: string
+ *           example: Jane
+ *         lastName:
+ *           type: string
+ *           example: Doe
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: jane.doe@example.com
+ *         favoriteColor:
+ *           type: string
+ *           example: blue
+ *         birthday:
+ *           type: string
+ *           format: date
+ *           example: 1995-03-12
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ */
+
+/**
+ * @openapi
+ * /api/contacts:
+ *   get:
+ *     summary: Get all contacts
+ *     tags: [Contacts]
+ *     responses:
+ *       200:
+ *         description: Array of contacts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Contact'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *
+ *   post:
+ *     summary: Create a contact
+ *     description: Creates a new contact. Optionally accepts a client-specified `_id` (Mongo ObjectId string) for demos.
+ *     tags: [Contacts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             allOf:
+ *               - $ref: '#/components/schemas/Contact'
+ *             example:
+ *               firstName: Jane
+ *               lastName: Doe
+ *               email: jane.doe@example.com
+ *               favoriteColor: blue
+ *               birthday: 1995-03-12
+ *     responses:
+ *       201:
+ *         description: Created; returns the new id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   example: 66f0b8f3d9c0a8a7d1a2b3c4
+ *       400:
+ *         description: Validation error or invalid _id format
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       409:
+ *         description: Duplicate email
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ */
+
+/**
+ * @openapi
+ * /api/contacts/{id}:
+ *   get:
+ *     summary: Get a contact by id
+ *     tags: [Contacts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Found contact
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Contact' }
+ *       400:
+ *         description: Invalid id format
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *
+ *   put:
+ *     summary: Update a contact by id (replaces all fields)
+ *     tags: [Contacts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Contact'
+ *           example:
+ *             firstName: Janet
+ *             lastName: Doe
+ *             email: janet.doe@example.com
+ *             favoriteColor: green
+ *             birthday: 1994-12-01
+ *     responses:
+ *       204:
+ *         description: Updated (no content)
+ *       400:
+ *         description: Invalid id or validation error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *
+ *   delete:
+ *     summary: Delete a contact by id
+ *     tags: [Contacts]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       204:
+ *         description: Deleted
+ *       400:
+ *         description: Invalid id format
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       404:
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/Error' }
+ */
+
 // --- helpers ---
 function isIsoDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value) || !isNaN(Date.parse(value));
@@ -41,7 +250,7 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// --- API: GET one (validate id inside) ---
+// --- API: GET one ---
 router.get('/:id', async (req, res) => {
   try {
     await connect();
@@ -59,7 +268,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// --- API: POST create (returns new id) ---
 // --- API: POST create (returns new id) ---
 router.post('/', async (req, res) => {
   try {
@@ -80,7 +288,7 @@ router.post('/', async (req, res) => {
       doc = { _id: new ObjectId(maybeId), ...contact };
     }
 
-    // Duplicate email guard (kept as-is)
+    // Duplicate email guard
     const existing = await db.collection('contacts').findOne({ email: contact.email });
     if (existing) return res.status(409).json({ error: 'A contact with that email already exists' });
 
